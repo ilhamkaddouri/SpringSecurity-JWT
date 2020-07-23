@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.jwtspringsec.dao.TaskRepository;
 import com.example.jwtspringsec.entities.Task;
@@ -17,6 +19,10 @@ public class JwtSpringSecApplication implements CommandLineRunner{
 	
 	public static void main(String[] args) {
 		SpringApplication.run(JwtSpringSecApplication.class, args);
+	}
+	@Bean
+	public  BCryptPasswordEncoder getBCPE() {
+		return new  BCryptPasswordEncoder();
 	}
 
 	@Override
