@@ -5,6 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.jwtspringsec.dao.RoleRepository;
+import com.example.jwtspringsec.dao.UserRepository;
 import com.example.jwtspringsec.entities.AppRole;
 import com.example.jwtspringsec.entities.AppUser;
 @Service
@@ -12,28 +14,37 @@ import com.example.jwtspringsec.entities.AppUser;
 public class AccountServiceImpl implements AccountService{
 	@Autowired
 	 private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	
 	@Override
 	public AppUser save(AppUser user) {
-		// TODO Auto-generated method stub
-		return null;
+		String hashPW = bCryptPasswordEncoder.encode(user.getPassword());
+		user.setPassword(hashPW);
+		return userRepository.save(user);
 	}
 
 	@Override
 	public AppRole save(AppRole role) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return roleRepository.save(role);
 	}
 
 	@Override
 	public void addRoleToUse(String username, String roleName) {
-		// TODO Auto-generated method stub
-		
+		AppRole role = roleRepository.findRoleByRoleName(roleName);
+		AppUser user = userRepository.findByUsername(username);
+		user.getRoles().add(role);
 	}
 
 	@Override
 	public AppUser findByUsername(String username) {
 		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findByUsername(username);
 	}
 
 }
